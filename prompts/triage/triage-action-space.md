@@ -20,7 +20,9 @@ Escalate hands the message to the coordinator, the agent holding the seeded
 catch-all topic. Escalate when no topic or agent fits the message, or when the
 decision needs authority you do not hold — spawning a new agent, resolving
 ambiguous ownership, or any call that reshapes the session rather than routes
-within it. Give the escalation a reason atom from this closed set:
+within it. Give the escalation a short free-text coordinator-reason label naming
+why the coordinator must decide. These are the recommended labels — prefer one of
+them, but the reason is free text, not a closed atom set:
 
 - `NoTopicFits` — no registered agent's topics cover the message.
 - `AmbiguousOwnership` — several agents could own it and the choice needs a

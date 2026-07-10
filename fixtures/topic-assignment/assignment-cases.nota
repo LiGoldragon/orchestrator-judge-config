@@ -1,11 +1,17 @@
 ;; Test material only. Each case pairs a scenario label with a canned judge reply
 ;; that must parse under the topic-assignment output grammar. These are not live
 ;; assignment decisions.
+;;
+;; Reply shape reconciled against the signal-orchestrator-judge crate types: a
+;; NOTA record is a headerless positional body. The assign payload is
+;; `([<reuse-paths>] [<new-topics>])`, never `(TopicAssignment ...)`, and a new
+;; topic is `(<parent-option> <name>)` whose optional parent is `(Some <path>)`
+;; or the bare atom `None`, never a bare path atom.
 [
-  (Case pure-reuse [|mission fits an existing rollout topic|] (Assign (TopicAssignment [deployment/nix-rollout] [])))
-  (Case create-under-parent [|new work sits under an existing parent topic|] (Assign (TopicAssignment [] [(NewTopic deployment observability)])))
-  (Case reuse-plus-create [|join one existing topic and open one new root topic|] (Assign (TopicAssignment [wire-contract] [(NewTopic None contract-tests)])))
-  (Case create-at-root [|genuinely new ground with no fitting parent|] (Assign (TopicAssignment [] [(NewTopic None security-audit)])))
+  (Case pure-reuse [|mission fits an existing rollout topic|] (Assign ([deployment/nix-rollout] [])))
+  (Case create-under-parent [|new work sits under an existing parent topic|] (Assign ([] [((Some deployment) observability)])))
+  (Case reuse-plus-create [|join one existing topic and open one new root topic|] (Assign ([wire-contract] [(None contract-tests)])))
+  (Case create-at-root [|genuinely new ground with no fitting parent|] (Assign ([] [(None security-audit)])))
   (Case reject-vague [|words but no concrete work to place|] (Reject (MissionTooVague [|the mission names no concrete work to place on the tree|])))
   (Case reject-empty [|blank mission description|] (Reject (MissionEmpty [|the registration carries no mission description|])))
 ]

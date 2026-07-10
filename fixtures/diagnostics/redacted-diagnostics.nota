@@ -1,6 +1,6 @@
 ;; Test material only. Diagnostics are non-load-bearing and redacted by default.
 [
   (Case clear-verdict None)
-  (Case private-message (Redacted [|hash-or-summary-only|]))
+  (Case private-message (Redacted [|hash or summary only|]))
   (Case provider-error (Redacted [|no credential values|]))
 ]

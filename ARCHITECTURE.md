@@ -46,9 +46,39 @@ value of that grammar; any deviation is a format failure handled caller-side.
 Model verdicts never carry transport-failure reasons — unavailability and timeout
 live with the caller, not the model.
 
-The sibling contract crate `signal-orchestrator-judge` will hold the Rust types
-for these grammars. Until it exists, the `nota-output` sections here are
-authoritative; when it lands, reconcile the grammars against its types.
+The sibling contract crate `signal-orchestrator-judge` holds the Rust types for
+these grammars. The `nota-output` sections and fixtures are reconciled against
+its derive codec (see below).
+
+## Grammar reconciliation (against signal-orchestrator-judge)
+
+This pack was authored before the contract crate existed and invented a few
+shapes that the crate's NOTA derive codec does not use. The `orchestrator-judge`
+adapter tests wire these FixtureSets in and decode every canned reply through the
+real model-verdict types, so the fixtures and `nota-output` grammar were corrected
+to the crate's actual codec:
+
+- Records are headerless positional bodies. An assign payload is
+  `([<reuse>] [<create>])`, not `(TopicAssignment ...)`; a new topic is
+  `(<parent> <name>)`, not `(NewTopic ...)`; a route is `([<recipients>]
+  <retyped> <rewritten>)`, not `(TriageRouting ...)`; an escalation is
+  `(<reason> <detail>)`, not `(EscalationNote ...)`. NOTA writes the type by
+  position, never as a token inside the parentheses.
+- Optional slots are `(Some <value>)` or the bare atom `None`. A new topic's
+  parent is `(Some <path>)` or `None` (was a bare path atom); a retyped kind is
+  `(Some Interruption)` etc. (was a bare kind); a rewritten message is a full
+  `(Some (<kind> <subject> <content>))` orchestrator message (was bare pipe text).
+- The escalation coordinator-reason is free text in the crate
+  (`EscalationReason`, a non-empty string newtype), not a closed enum. The four
+  invented atoms `NoTopicFits`, `AmbiguousOwnership`, `NeedsAuthority`,
+  `AgentSpawnNeeded` are kept as *recommended* vocabulary; the grammar no longer
+  claims they are a closed set. The crate's clean rejection enums
+  (`TopicAssignmentRejectionReason`, `TriageRejectionReason`) matched the invented
+  atoms exactly and were left unchanged.
+- Single-token pipe text is a redundant NOTA delimiter and was rejected by the
+  codec; such a diagnostics fixture value was made genuine multi-word text.
+
+The contract crate's types were correct as shipped and needed no change.
 
 ## Fixture rule
 
