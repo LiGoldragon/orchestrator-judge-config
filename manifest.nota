@@ -1,0 +1,43 @@
+;; Public prompt manifest for the orchestrator judge AI calls.
+;; Schema documentation:
+;; (PromptPack <judge-name> <message-role> [(Section <section-name> <path>) ...])
+;; (ConfigSet <config-name> <scope> [<path> ...])
+;; (FixtureSet <judge-name> <purpose> [<path> ...])
+[
+  (PromptPack orchestrator-topic-assignment-judge system [
+    (Section role prompts/topic-assignment/role.md)
+    (Section topic-tree-shape prompts/topic-assignment/topic-tree-shape.md)
+    (Section reuse-before-create prompts/topic-assignment/reuse-before-create.md)
+    (Section cardinality-guidance prompts/topic-assignment/cardinality-guidance.md)
+    (Section rejection-reasons prompts/topic-assignment/rejection-reasons.md)
+    (Section nota-output prompts/topic-assignment/nota-output.md)
+    (Section few-shot prompts/topic-assignment/few-shot.md)
+    (Section user-template prompts/topic-assignment/user-template.md)
+    (Section retry-instruction prompts/retry-instruction.md)
+    (Section diagnostics prompts/diagnostics.md)
+  ])
+  (PromptPack orchestrator-triage-judge system [
+    (Section role prompts/triage/role.md)
+    (Section message-kinds prompts/triage/message-kinds.md)
+    (Section triage-action-space prompts/triage/triage-action-space.md)
+    (Section recipient-directory-shape prompts/triage/recipient-directory-shape.md)
+    (Section rejection-reasons prompts/triage/rejection-reasons.md)
+    (Section nota-output prompts/triage/nota-output.md)
+    (Section few-shot prompts/triage/few-shot.md)
+    (Section user-template prompts/triage/user-template.md)
+    (Section retry-instruction prompts/retry-instruction.md)
+    (Section diagnostics prompts/diagnostics.md)
+  ])
+  (ConfigSet orchestrator-judge-provider-boundary public [
+    config/provider-policy.nota
+  ])
+  (FixtureSet orchestrator-topic-assignment-judge test-material [
+    fixtures/topic-assignment/assignment-cases.nota
+  ])
+  (FixtureSet orchestrator-triage-judge test-material [
+    fixtures/triage/routing-cases.nota
+  ])
+  (FixtureSet orchestrator-judge-diagnostics test-material [
+    fixtures/diagnostics/redacted-diagnostics.nota
+  ])
+]

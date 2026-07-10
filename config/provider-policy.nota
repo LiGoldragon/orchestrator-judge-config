@@ -1,0 +1,2 @@
+;; Non-secret provider boundary. This is configuration policy, not credentials.
+(ProviderPolicy public-config [provider-name model-name maximum-output-tokens reasoning-effort thinking-mode] [api-key token secret endpoint-credential])

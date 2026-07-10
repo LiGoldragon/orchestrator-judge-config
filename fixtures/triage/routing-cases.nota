@@ -1,0 +1,10 @@
+;; Test material only. Each case pairs a scenario label with a canned judge reply
+;; that must parse under the triage output grammar. These are not live routing
+;; decisions.
+[
+  (Case direct-route [|route to one owner, kind and payload kept|] (Route (TriageRouting [rust-auditor] None None)))
+  (Case retype-and-rewrite [|raise a buried-urgent note and rewrite it for the recipient|] (Route (TriageRouting [nix-implementer] Interruption [|stop the staging rollout immediately; it is breaking production|])))
+  (Case fanout-two-agents [|one report reaches two owners of the same topic|] (Route (TriageRouting [rust-auditor nix-implementer] None None)))
+  (Case escalate-spawn [|no registered agent owns this work|] (Escalate (EscalationNote AgentSpawnNeeded [|no registered agent owns documentation; the coordinator must decide whether to spawn one|])))
+  (Case reject-unregistered-sender [|the sender is not in the agent directory|] (Reject (SenderNotRegistered [|the sender stray-worker is not in the agent directory|])))
+]
