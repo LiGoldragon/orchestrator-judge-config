@@ -9,3 +9,9 @@ credentials, private data, Rust binaries, or Nix-built prompt copies here.
 Use orchestrator and judge terminology for new names. Keep the two packs aligned:
 a change to an output grammar lands in that pack's `nota-output`, `few-shot`, and
 fixtures together, so every fixture reply still parses.
+
+## Protos estate status
+
+Stack: correct-new destination
+Status: component-associated, adoption unresolved
+Absence of a direct notation edge is not proof of adoption.
